@@ -1,6 +1,6 @@
 //
-//  ex00.swift
-//  ex00
+//  ex01App.swift
+//  ex01
 //
 //  Created by jules bernard on 15.10.25.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct ex00: App {
+struct ex01App: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
