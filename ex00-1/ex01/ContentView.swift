@@ -7,16 +7,14 @@
 
 import SwiftUI
 
-struct ViewModel: Observable {
-    
-}
-
 struct ContentView: View {
+    @State private var buttonBinarySwitch: Bool = true
     
-//    @StateObject
+
     var body: some View {
         VStack {
-            Button("A simple text") {
+            Button(buttonBinarySwitch ? "A simple text" : "hello world!") {
+                buttonBinarySwitch.toggle()
                 print("button pressed")
             }
             .padding(10)
@@ -26,4 +24,8 @@ struct ContentView: View {
         }
         .padding()
     }
+}
+
+#Preview {
+    ContentView()
 }
