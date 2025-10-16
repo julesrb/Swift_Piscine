@@ -1,29 +1,12 @@
 //
-//  ContentView.swift
+//  Buttons.swift
 //  ex02
 //
-//  Created by jules bernard on 15.10.25.
+//  Created by jules bernard on 16.10.25.
 //
 
+
 import SwiftUI
-
-struct Display: View {
-    @State var expression = "...+...-.../...*...?"
-    @State var result = "0"
-
-    var body: some View {
-        HStack {
-            Spacer()
-            VStack(alignment: .trailing) {
-                Text(expression)
-                    .font(.system(size: 30))
-                Text(result)
-                    .font(.system(size: 40, weight: .bold))
-            }
-            .padding()
-        }
-    }
-}
 
 struct Buttons: View {
     let calcButtonsArray: [[String]] =
@@ -44,25 +27,12 @@ struct Buttons: View {
                                 .background(Color.orange)
                                 .foregroundStyle(Color.black)
                                 .cornerRadius(12)
+                                .font(.system(size: 24))
                         }
                         .buttonStyle(.plain)
+                        
                     }
                 }
-                
-            }
-        }
-    }
-}
-
-struct ContentView: View {
-    var body: some View {
-        VStack {
-            NavigationStack {
-                Spacer()
-                Display()
-                Spacer()
-                Buttons()
-                .navigationTitle("Calculator") // This is the current good practise for clean design instead of an AppBar
             }
         }
         .padding()
@@ -71,6 +41,4 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-//    Display()
-//    Buttons()
 }
