@@ -33,7 +33,7 @@ It is like a bridge of extension of the view's data.
 - Does not store anything itself — it just forwards changes.
 
 ```swift
-    struct CounterButton: View {
+struct CounterButton: View {
     @Binding var count: Int
     
     var body: some View {

@@ -9,13 +9,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var coreViewModel = CoreViewModel()
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack {   
             VStack{
                 Spacer()
-                Display()
+                Display(viewModel: coreViewModel)
                 Spacer()
-                Buttons()
+                Buttons(viewModel: coreViewModel)
             }
             .navigationTitle("Calculator") // This is the current good practise for clean design instead of an AppBar
         }

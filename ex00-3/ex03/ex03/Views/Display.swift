@@ -8,21 +8,16 @@
 
 import SwiftUI
 
-class DisplayViewModel: ObservableObject {
-    @Published var expression = "..."
-    @Published var result = "0"
-}
-
 struct Display: View {
-    @StateObject var displayViewModel = DisplayViewModel()
+    @ObservedObject var viewModel: CoreViewModel
 
     var body: some View {
         HStack {
             Spacer()
             VStack(alignment: .trailing) {
-                Text(displayViewModel.expression)
+                Text(viewModel.expression)
                     .font(.system(size: 30))
-                Text(displayViewModel.result)
+                Text(viewModel.result)
                     .font(.system(size: 60, weight: .bold))
             }
             .padding()
