@@ -1,14 +1,14 @@
 //
-//  ex03App.swift
-//  ex03
+//  calculator__appApp.swift
+//  calculator _app
 //
-//  Created by jules bernard on 16.10.25.
+//  Created by jules bernard on 03.11.25.
 //
 
 import SwiftUI
 
 @main
-struct ex03App: App {
+struct calculator__appApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

@@ -7,6 +7,7 @@
 
 
 import Foundation
+import Combine
 
 class CoreViewModel: ObservableObject {
     @Published var expression: String = ""
@@ -32,11 +33,21 @@ class CoreViewModel: ObservableObject {
     
     func calculate() {
         do {
-            try result = String(engine.calculate(expression))
-        } catch {
-            result = "☠️ OverFlow ☠️"
+            let value = try engine.calculate(expression)
+            result = String(value)
+        } catch ExpressionError.overflow {
+            result = "Overflow"
             expression.removeAll()
-        }
+        } catch ExpressionError.expressionError {
+            result = "Exp Err"
+            expression.removeAll()
+        } catch ExpressionError.invalidFormat {
+            result = "Invalid Format"
+            expression.removeAll()
+        } catch ExpressionError.divisionByZero {
+            result = "Div 0 Err"
+            expression.removeAll()
+        } catch {}
         expression.removeAll()
     }
     

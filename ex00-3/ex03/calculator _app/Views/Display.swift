@@ -11,6 +11,7 @@ import SwiftUI
 struct Display: View {
     @ObservedObject var viewModel: CoreViewModel
 
+
     var body: some View {
         HStack {
             Spacer()
