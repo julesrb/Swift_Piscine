@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct Display: View {
-    @State var expression = "...+...-.../...*...?"
+    @State var expression = "0"
     @State var result = "0"
 
     var body: some View {
