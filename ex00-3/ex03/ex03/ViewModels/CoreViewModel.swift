@@ -31,7 +31,12 @@ class CoreViewModel: ObservableObject {
     }
     
     func calculate() {
-        result = String(engine.calculate(expression))
+        do {
+            try result = String(engine.calculate(expression))
+        } catch {
+            result = "☠️ OverFlow ☠️"
+            expression.removeAll()
+        }
         expression.removeAll()
     }
     
@@ -44,7 +49,12 @@ class CoreViewModel: ObservableObject {
                 if (button == .minus) {
                     addToExpression(button.rawValue)
                 }
-                else if (expression.last != "+" && expression.last != "-" && expression.last != "*" && expression.last != "/" && expression.last != ".") {
+                else if (expression.last != "+"
+                         && expression.last != "-"
+                         && expression.last != "*"
+                         && expression.last != "/"
+                         && expression.last != "."
+                         && !expression.isEmpty) {
                     addToExpression(button.rawValue)
                 }
             case .compute:

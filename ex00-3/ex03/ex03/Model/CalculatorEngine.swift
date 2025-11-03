@@ -7,14 +7,26 @@
 
 import Foundation
 
+enum ExpressionError: Error {
+    case overflow
+}
+
 struct CalculatorEngine {
     
-    func calculate(_ expression: String) -> Double {
+    func calculate(_ expression: String) throws -> Double {
         
-        let expression = NSExpression(format: expression)
-        if let result = expression.expressionValue(with: nil, context: nil) as? Double {
-            return result
+        do {
+            let expression = NSExpression(format: expression)
+            if let result = expression.expressionValue(with: nil, context: nil) as? Double {
+                if result.isInfinite || result.isNaN {
+                    throw ExpressionError.overflow
+                }
+                return result
         }
+        } catch {
+            throw ExpressionError.overflow
+        }
+
         return 0
     }
     
