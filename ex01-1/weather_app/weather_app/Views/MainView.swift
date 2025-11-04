@@ -42,14 +42,12 @@ struct MainView: View {
                     .background(BackgroundView())
                     .ignoresSafeArea(.keyboard, edges: .bottom)
             }
-            .ignoresSafeArea(.keyboard, edges: .bottom)
             .tint(.white)
             .gesture(drag)
             TopBarView(cityBarViewModel: cityBarViewModel)
                 .padding(.top, 0)
                 .padding(.horizontal)
         }
-        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 
