@@ -12,20 +12,17 @@ struct CurrentlyView: View {
     @ObservedObject var cityBarViewModel: CityBarViewModel
     
     var body: some View {
-        ZStack {
-            BackgroundView()
-            VStack {
-                Spacer()
-                Text("Current")
-                    .font(.title)
-                    .foregroundStyle(Color.white)
-                Text(cityBarViewModel.text)
-                    .font(.title)
-                    .foregroundStyle(Color.white)
-                Spacer()
-            }
+        VStack {
+            Spacer()
+            Text("Current")
+                .font(.title)
+                .foregroundStyle(Color.white)
+            Text(cityBarViewModel.text)
+                .font(.title)
+                .foregroundStyle(Color.white)
+            Spacer()
         }
-        .ignoresSafeArea(.keyboard, edges: .all)
+    .ignoresSafeArea(.keyboard, edges: .all)
     }
 }
 

@@ -12,19 +12,16 @@ struct TodayView: View {
     @ObservedObject var cityBarViewModel: CityBarViewModel
     
     var body: some View {
-        ZStack {
-            BackgroundView()
-            VStack {
-                Spacer()
-                Text("Today")
-                    .font(.title)
-                    .foregroundStyle(Color.white)
-                Text(cityBarViewModel.text)
-                    .font(.title)
-                    .foregroundStyle(Color.white)
-                Spacer()
-            }
-            .ignoresSafeArea(.keyboard, edges: .all)
+        VStack {
+            Spacer()
+            Text("Today")
+                .font(.title)
+                .foregroundStyle(Color.white)
+            Text(cityBarViewModel.text)
+                .font(.title)
+                .foregroundStyle(Color.white)
+            Spacer()
         }
+        .ignoresSafeArea(.keyboard, edges: .all)
     }
 }

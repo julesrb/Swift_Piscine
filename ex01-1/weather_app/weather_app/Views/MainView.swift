@@ -29,20 +29,27 @@ struct MainView: View {
                 CurrentlyView(cityBarViewModel: cityBarViewModel)
                     .tabItem { Label("Currently", systemImage: "clock.arrow.trianglehead.2.counterclockwise.rotate.90") }
                     .tag(0)
+                    .background(BackgroundView())
+                    .ignoresSafeArea(.keyboard, edges: .bottom)
                 TodayView(cityBarViewModel: cityBarViewModel)
                     .tabItem { Label("Today", systemImage: "1.calendar") }
                     .tag(1)
+                    .background(BackgroundView())
+                    .ignoresSafeArea(.keyboard, edges: .bottom)
                 WeeklyView(cityBarViewModel: cityBarViewModel)
                     .tabItem { Label("Weekly", systemImage: "calendar") }
                     .tag(2)
+                    .background(BackgroundView())
+                    .ignoresSafeArea(.keyboard, edges: .bottom)
             }
-            
+            .ignoresSafeArea(.keyboard, edges: .bottom)
             .tint(.white)
             .gesture(drag)
             TopBarView(cityBarViewModel: cityBarViewModel)
                 .padding(.top, 0)
                 .padding(.horizontal)
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 
