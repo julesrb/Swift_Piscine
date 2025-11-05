@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     @State private var selectedTab: Int = 0
-    @StateObject private var cityBarViewModel = CityBarViewModel()
+    @StateObject private var cityBarViewModel = LocationViewModel()
     
     var drag: some Gesture {
         DragGesture(minimumDistance: 0, coordinateSpace: .local)
@@ -29,14 +29,19 @@ struct MainView: View {
                 CurrentlyView(cityBarViewModel: cityBarViewModel)
                     .tabItem { Label("Currently", systemImage: "clock.arrow.trianglehead.2.counterclockwise.rotate.90") }
                     .tag(0)
+                    .background(BackgroundView())
+                    .ignoresSafeArea(.keyboard, edges: .bottom)
                 TodayView(cityBarViewModel: cityBarViewModel)
                     .tabItem { Label("Today", systemImage: "1.calendar") }
                     .tag(1)
+                    .background(BackgroundView())
+                    .ignoresSafeArea(.keyboard, edges: .bottom)
                 WeeklyView(cityBarViewModel: cityBarViewModel)
                     .tabItem { Label("Weekly", systemImage: "calendar") }
                     .tag(2)
+                    .background(BackgroundView())
+                    .ignoresSafeArea(.keyboard, edges: .bottom)
             }
-            
             .tint(.white)
             .gesture(drag)
             TopBarView(cityBarViewModel: cityBarViewModel)
