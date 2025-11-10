@@ -1,3 +1,13 @@
+//
+//  Weather.swift
+//  medium_weather_app
+//
+//  Created by jules bernard on 07.11.25.
+//
+
+import Foundation
+
+
 struct Weather {
     let latitude: Float
     let longitude: Float

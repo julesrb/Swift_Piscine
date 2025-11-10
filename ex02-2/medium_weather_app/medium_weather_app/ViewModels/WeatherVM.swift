@@ -1,5 +1,16 @@
+//
+//  WeatherVM.swift
+//  medium_weather_app
+//
+//  Created by jules bernard on 07.11.25.
+//
+
+import SwiftUI
+import Combine
+
+
 class WeatherVM: ObservableObject {
-    @State var weather : Weather?
+    @Published var weather : Weather?
     
     func startWeatherRequest(lat: Double, longi: Double) {
         Task {

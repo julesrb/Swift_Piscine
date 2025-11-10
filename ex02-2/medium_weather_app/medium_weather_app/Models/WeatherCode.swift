@@ -35,18 +35,6 @@ enum WeatherCode: String, CaseIterable {
         }
     }
 
-    var symbol: String {
-        switch self {
-        case .clear: return "☀️"
-        case .fog: return "🌫"
-        case .drizzle: return "🌦"
-        case .rain: return "🌧"
-        case .snow: return "❄️"
-        case .thunderstorm: return "🌩"
-        case .unknown: return "❔"
-        }
-    }
-
     var description: String {
         switch self {
         case .clear: return "Clear"
