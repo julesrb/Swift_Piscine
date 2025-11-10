@@ -27,6 +27,18 @@ struct SearchBar: View {
                 .focused($isFocused)
                 .onSubmit {
                     cityBarViewModel.searchText = ""
+                    guard let firstCity = cityBarViewModel.cityList.first else {
+                           print("No city selected")
+                           return
+                       }
+                    Task {
+                        do {
+                            let data = try await WeatherAPI.fetchWeather(lat: firstCity.latitude, longi: firstCity.longitude)
+                            print(data)
+                        } catch {
+                            print("error with API call")
+                        }
+                    }
                 }
         }
         .contentShape(Rectangle()) // makes the whole HStack tappable
