@@ -20,10 +20,3 @@ struct BackgroundView: View {
     }
 }
 
-#Preview {
-    let appState = AppState()
-    let weatherVM = WeatherVM()
-    let locationVM = LocationVM(weatherVM: weatherVM)
-    return MainView(weatherVM: weatherVM, locationVM: locationVM)
-        .environmentObject(appState)
-}

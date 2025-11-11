@@ -9,18 +9,16 @@
 import SwiftUI
 
 struct TodayView: View {
-    @ObservedObject var locationVM: LocationVM
-    @ObservedObject var weatherVM: WeatherVM
+    @ObservedObject var weatherCoordinatorVM: WeatherCoordinatorVM
     
     var body: some View {
         VStack {
             Spacer()
             ScrollView {
-                if let weather = weatherVM.weather {
-                    Text(locationVM.name)
-                    Text(locationVM.admin1)
-                    Text(locationVM.country)
-                    
+                Text(weatherCoordinatorVM.locationVM.name)
+                Text(weatherCoordinatorVM.locationVM.admin1)
+                Text(weatherCoordinatorVM.locationVM.country)
+                if let weather = weatherCoordinatorVM.weather {
                     ForEach(0..<24, id: \.self) { i in
                         HStack {
                             let formatter: DateFormatter = {
@@ -46,12 +44,4 @@ struct TodayView: View {
         .frame(minWidth: 0, maxWidth: .infinity)
         .ignoresSafeArea(.keyboard, edges: .all)
     }
-}
-
-#Preview {
-    let appState = AppState()
-    let weatherVM = WeatherVM()
-    let locationVM = LocationVM(weatherVM: weatherVM)
-    return MainView(weatherVM: weatherVM, locationVM: locationVM)
-        .environmentObject(appState)
 }

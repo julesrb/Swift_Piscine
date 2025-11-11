@@ -10,49 +10,48 @@ import Combine
 import MapKit
 import Contacts
 
+
 class LocationVM: ObservableObject {
     @Published var searchText: String = ""
     @Published var midText: String = ""
     @Published var cityList: [City] = []
     @Published var latiLongi: [Double]?
-    @Published var weatherVM : WeatherVM
     @Published var name: String = ""
     @Published var admin1: String = ""
     @Published var country: String = ""
-    var appState: AppState?
-    
+    @ObservedObject var appState: AppState
+    lazy var locationService = LocationService(locationVM: self)
+
     private var cancellables = Set<AnyCancellable>()
 
-    init(weatherVM: WeatherVM) {
-        self.weatherVM = weatherVM
-        // Subscribe to searchText changes
+    init(appState: AppState) {
+
+        self.appState = appState
+        setupSearchTextReact()
+    }
+
+    func setupSearchTextReact() {
         $searchText
             .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
             .removeDuplicates()
             .sink { [weak self] _ in
-                self?.submitSearch()
-            }
-            .store(in: &cancellables)
-        $latiLongi
-            .dropFirst()
-            .removeDuplicates()
-            .sink { [weak self] newValue in
-                guard let self else { return }
-                self.weatherVM.startWeatherRequest(lat: newValue![0], longi: newValue![1])
+                self?.submitCitySearch()
             }
             .store(in: &cancellables)
     }
-    
+
     func fetchCityList(city: String) async throws -> [City]{
         let url = URL(string: "https://geocoding-api.open-meteo.com/v1/search?name=\(city)&count=10&language=en&format=json")!
         let (data, _) = try await URLSession.shared.data(from: url)
         let decode = try JSONDecoder().decode(Cities.self, from: data)
         return decode.results ?? []
     }
-    
+
     func reverseGeocode() {
-        guard let loc = latiLongi else {return}
-        let location = CLLocation(latitude: loc[0], longitude: loc[1])        
+        guard let loc = latiLongi else {
+            print("no coordinate now")
+                  return}
+        let location = CLLocation(latitude: loc[0], longitude: loc[1])
         if let request = MKReverseGeocodingRequest(location: location) {
             Task {
                 if let mapItem = try await request.mapItems.first {
@@ -66,11 +65,10 @@ class LocationVM: ObservableObject {
                     }
                 }
             }
-        }
+        } else { print("bad MKReverseGeocodingRequest") }
     }
-    
-    func submitSearch() {
-        midText = searchText
+
+    func submitCitySearch() {
         Task {
             do {
                 let cities = try await fetchCityList(city: searchText)
@@ -78,8 +76,8 @@ class LocationVM: ObservableObject {
                 cityList = cities
             } catch {
                 print(error)
-                appState?.appError = AppError.noConnection
-                appState?.error = true
+//                appState.appError = AppError.noConnection
+//                appState.error = true
             }
         }
     }

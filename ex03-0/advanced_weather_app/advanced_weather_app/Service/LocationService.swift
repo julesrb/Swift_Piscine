@@ -13,7 +13,7 @@ import SwiftUI
 class LocationService: NSObject,ObservableObject, CLLocationManagerDelegate {
     let manager = CLLocationManager()
     @Published var location: CLLocation?
-    var locationVM: LocationVM
+    @Published var locationVM: LocationVM
     
     init(locationVM: LocationVM){
         self.locationVM = locationVM
@@ -21,18 +21,19 @@ class LocationService: NSObject,ObservableObject, CLLocationManagerDelegate {
         manager.delegate = self
     }
     
-    func locationManagerDidChangeAuthorization() {
+    func checkAuthorization() {
         switch manager.authorizationStatus {
         case .authorizedWhenInUse:
-            print(manager.requestLocation())
+            print("location auth is when is use OK")
+            manager.requestLocation()
             break
             
         case .restricted, .denied:
-            print(manager.authorizationStatus)
             print("location auth are restricted or denied")
             break
             
         case .notDetermined:
+            print("location auth is not determined")
             manager.requestWhenInUseAuthorization()
             break
             
@@ -41,14 +42,19 @@ class LocationService: NSObject,ObservableObject, CLLocationManagerDelegate {
         }
     }
     
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+            if manager.authorizationStatus == .authorizedWhenInUse ||
+               manager.authorizationStatus == .authorizedAlways {
+                manager.requestLocation()
+            }
+        }
+    
 //    Those 2 functions NEED to be explicitely present here
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let loc = locations.last else {return}
-        let coord = "\(loc.coordinate.latitude) \(loc.coordinate.longitude)"
-//        locationVM.latiLongi = [loc.coordinate.latitude, loc.coordinate.longitude]
+        locationVM.latiLongi = [loc.coordinate.latitude, loc.coordinate.longitude]
 //        locationVM.latiLongi = [52.52, 13.419]
-        locationVM.latiLongi = [0, 0]
-        locationVM.midText = coord
+//        locationVM.latiLongi = [0, 0]
         locationVM.reverseGeocode()
     }
     

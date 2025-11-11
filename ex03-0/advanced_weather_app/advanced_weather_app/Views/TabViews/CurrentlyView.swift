@@ -9,17 +9,15 @@
 import SwiftUI
 
 struct CurrentlyView: View {
-    @ObservedObject var locationVM: LocationVM
-    @ObservedObject var weatherVM: WeatherVM
+    @ObservedObject var weatherCoordinatorVM: WeatherCoordinatorVM
     
     var body: some View {
         VStack {
             Spacer()
-            if let weather = weatherVM.weather {
-                Text(locationVM.name)
-                Text(locationVM.admin1)
-                Text(locationVM.country)
-                
+            Text(weatherCoordinatorVM.locationVM.name)
+            Text(weatherCoordinatorVM.locationVM.admin1)
+            Text(weatherCoordinatorVM.locationVM.country)
+            if let weather = weatherCoordinatorVM.weather {
                 Text("\(weather.data.current.temperature2m, specifier: "%.1f")°C")
                 Text(WeatherCode(code: Int(weather.data.current.weatherCode)).description)
                 Text("\(weather.data.current.windSpeed10m, specifier: "%.1f") Km/h")
@@ -35,10 +33,4 @@ struct CurrentlyView: View {
     }
 }
 
-#Preview {
-    let appState = AppState()
-    let weatherVM = WeatherVM()
-    let locationVM = LocationVM(weatherVM: weatherVM)
-    return MainView(weatherVM: weatherVM, locationVM: locationVM)
-        .environmentObject(appState)
-}
+

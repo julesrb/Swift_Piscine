@@ -9,19 +9,22 @@ import SwiftUI
 
 @main
 struct advanced_weather_appApp: App {
-    @StateObject private var appState = AppState()
-    @StateObject private var weatherVM: WeatherVM
+    @StateObject private var appState : AppState
     @StateObject private var locationVM: LocationVM
+    @StateObject private var coordinatorVM: WeatherCoordinatorVM
     
     init() {
-            let weather = WeatherVM()
-            _weatherVM = StateObject(wrappedValue: weather)
-            _locationVM = StateObject(wrappedValue: LocationVM(weatherVM: weather))
-        }
+        let appState = AppState()
+        let locationVM = LocationVM(appState: appState)
+        _coordinatorVM = StateObject(wrappedValue: WeatherCoordinatorVM(
+            locationVM: locationVM, appState: appState))
+        _locationVM = StateObject(wrappedValue: locationVM)
+        _appState = StateObject(wrappedValue: appState)
+    }
     
     var body: some Scene {
         WindowGroup {
-            MainView(weatherVM: weatherVM, locationVM: locationVM)
+            MainView(coordinatorVM: coordinatorVM, locationVM: locationVM)
             .environmentObject(appState)
         }
     }

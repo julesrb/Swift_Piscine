@@ -9,9 +9,8 @@ import SwiftUI
 import CoreLocation
 
 struct SearchBar: View {
-    @ObservedObject var locationVM: LocationVM
-    @Binding var showOverlay: Bool
     @EnvironmentObject var appState: AppState
+    @ObservedObject var locationVM: LocationVM
     
     var body: some View {
         HStack {
@@ -40,28 +39,26 @@ struct SearchBar: View {
         }
         .contentShape(Rectangle()) // makes the whole HStack tappable
         .onTapGesture {
-            showOverlay.toggle()
+            appState.showOverlay.toggle()
         }
     }
 }
 
 struct GpsButton: View {
+    @EnvironmentObject var appState: AppState
     @ObservedObject var locationVM: LocationVM
-    var locationService: LocationService
     @State private var didError = false
     
     init(locationVM: LocationVM) {
         self.locationVM = locationVM
-        self.locationService = LocationService(locationVM: locationVM)
     }
     
     var body: some View {
         Button(action: {
-            locationService.locationManagerDidChangeAuthorization()
-            if [.restricted, .denied].contains(locationService.manager.authorizationStatus) {
+            locationVM.locationService.checkAuthorization()
+            if [.restricted, .denied].contains(locationVM.locationService.manager.authorizationStatus) {
                 didError = true
             }
-            locationService.manager.requestLocation()
         }) {
             Image(systemName: "location.fill")
                 .imageScale(.large)
@@ -87,7 +84,7 @@ struct GpsButton: View {
 }
 
 struct CityScrollList: View {
-    @Binding var showOverlay: Bool
+    @EnvironmentObject var appState: AppState
     @ObservedObject var locationVM: LocationVM
     @FocusState.Binding var isFocused: Bool
     
@@ -102,7 +99,7 @@ struct CityScrollList: View {
                         .contentShape(Rectangle())
                         .onTapGesture {
                             locationVM.searchText = ""
-                            showOverlay = false
+                            appState.showOverlay = false
                             locationVM.latiLongi = [city.latitude, city.longitude]
                             locationVM.name = city.name
                             locationVM.admin1 = city.admin1
@@ -118,7 +115,6 @@ struct CityScrollList: View {
 
 struct TopBarView: View {
     @ObservedObject var locationVM: LocationVM
-    @Binding var showOverlay: Bool
     @FocusState private var isFocused: Bool
     @EnvironmentObject var appState: AppState
     
@@ -127,13 +123,12 @@ struct TopBarView: View {
             if #available(iOS 26.0, *) {
                 GlassEffectContainer(spacing: 20.0) {
                     HStack {
-                        SearchBar(locationVM: locationVM, showOverlay: $showOverlay)
+                        SearchBar(locationVM: locationVM)
                             .glassEffect(.clear)
                             .focused($isFocused)
                             .onChange(of: isFocused) {
-                                showOverlay = isFocused
+                                appState.showOverlay = isFocused
                             }
-                            .environmentObject(appState)
                         
                         GpsButton(locationVM: locationVM)
                             .glassEffect(.clear)
@@ -142,27 +137,22 @@ struct TopBarView: View {
                 }
             } else {
                 HStack {
-                    SearchBar(locationVM: locationVM, showOverlay: $showOverlay)
+                    SearchBar(locationVM: locationVM)
                         .background(.white.opacity(0.4))
                         .border(.white)
                         .cornerRadius(30)
-                        .environmentObject(appState)
+                        .focused($isFocused)
+                        .onChange(of: isFocused) {
+                            appState.showOverlay = isFocused
+                        }
+                    
                     GpsButton(locationVM: locationVM)
                 }
                 .padding()
             }
-            if showOverlay {
-                CityScrollList(showOverlay: $showOverlay, locationVM: locationVM, isFocused: $isFocused)
+            if appState.showOverlay {
+                CityScrollList(locationVM: locationVM, isFocused: $isFocused)
             }
         }
     }
 }
-
-#Preview {
-    let appState = AppState()
-    let weatherVM = WeatherVM()
-    let locationVM = LocationVM(weatherVM: weatherVM)
-    return MainView(weatherVM: weatherVM, locationVM: locationVM)
-        .environmentObject(appState)
-}
-
