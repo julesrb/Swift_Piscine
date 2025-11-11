@@ -5,8 +5,6 @@
 //  Created by jules bernard on 10.11.25.
 //
 
-
-
 enum WeatherCode: String, CaseIterable {
     case clear
     case fog

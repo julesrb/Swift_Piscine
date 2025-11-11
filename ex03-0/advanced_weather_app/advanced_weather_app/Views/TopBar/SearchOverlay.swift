@@ -5,8 +5,8 @@
 //  Created by jules bernard on 06.11.25.
 //
 
-
 import SwiftUI
+
 
 struct SearchOverlay: View {
     @EnvironmentObject var appState: AppState

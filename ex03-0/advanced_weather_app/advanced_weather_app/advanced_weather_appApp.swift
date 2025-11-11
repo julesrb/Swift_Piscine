@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 @main
 struct advanced_weather_appApp: App {
     @StateObject private var appState : AppState

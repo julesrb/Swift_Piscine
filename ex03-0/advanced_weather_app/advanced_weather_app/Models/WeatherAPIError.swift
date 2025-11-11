@@ -5,7 +5,6 @@
 //  Created by jules bernard on 06.11.25.
 //
 
-
 enum WeatherAPIError: Error {
     case noData(string: String)
 }

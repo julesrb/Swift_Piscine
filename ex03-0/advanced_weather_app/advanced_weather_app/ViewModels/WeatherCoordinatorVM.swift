@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 
+
 class WeatherCoordinatorVM: ObservableObject {
     @Published var weather : Weather?
     @ObservedObject var locationVM: LocationVM

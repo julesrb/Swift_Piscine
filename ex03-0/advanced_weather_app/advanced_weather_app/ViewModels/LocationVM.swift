@@ -47,6 +47,7 @@ class LocationVM: ObservableObject {
         return decode.results ?? []
     }
 
+    @MainActor
     func reverseGeocode() {
         guard let loc = latiLongi else {
             print("no coordinate now")

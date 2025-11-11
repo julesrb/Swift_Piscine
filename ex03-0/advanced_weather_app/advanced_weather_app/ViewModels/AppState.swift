@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 
+
 class AppState: ObservableObject {
     @Published var error: Bool = false
     @Published var appError: AppError = .noError

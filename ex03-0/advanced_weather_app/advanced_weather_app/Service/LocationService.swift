@@ -42,19 +42,17 @@ class LocationService: NSObject,ObservableObject, CLLocationManagerDelegate {
         }
     }
     
+    //    Those 3 functions NEED to be explicitely implemented here
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-            if manager.authorizationStatus == .authorizedWhenInUse ||
-               manager.authorizationStatus == .authorizedAlways {
-                manager.requestLocation()
-            }
+        if manager.authorizationStatus == .authorizedWhenInUse ||
+            manager.authorizationStatus == .authorizedAlways {
+            manager.requestLocation()
         }
+    }
     
-//    Those 2 functions NEED to be explicitely present here
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let loc = locations.last else {return}
         locationVM.latiLongi = [loc.coordinate.latitude, loc.coordinate.longitude]
-//        locationVM.latiLongi = [52.52, 13.419]
-//        locationVM.latiLongi = [0, 0]
         locationVM.reverseGeocode()
     }
     
