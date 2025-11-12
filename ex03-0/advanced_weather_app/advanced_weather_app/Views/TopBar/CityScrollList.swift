@@ -17,7 +17,7 @@ struct CityScrollList: View {
         ScrollView {
             VStack {
                 ForEach(locationVM.cityList) { city in
-                    Text("\(city.name) \(city.admin1), \(city.country)")
+                    Text("**\(city.name)** \(city.admin1), \(city.country)")
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .foregroundStyle(.white)
                         .padding(.bottom, 12)

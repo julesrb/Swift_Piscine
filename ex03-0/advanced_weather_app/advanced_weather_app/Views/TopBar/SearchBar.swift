@@ -19,7 +19,7 @@ struct SearchBar: View {
                 .padding(.leading, 16)
                 .padding(.trailing, 0)
             
-            TextField("City", text: $locationVM.searchText)
+            TextField("Search location", text: $locationVM.searchText)
                 .border(.clear)
                 .padding(12)
                 .foregroundColor(.white)
@@ -42,4 +42,12 @@ struct SearchBar: View {
             appState.showOverlay.toggle()
         }
     }
+}
+
+#Preview {
+    let appState = AppState()
+    let locationVM = LocationVM(appState: appState)
+    let weatherCoordinatorVM = WeatherCoordinatorVM(locationVM: locationVM, appState: appState)
+    MainView(coordinatorVM: weatherCoordinatorVM, locationVM: locationVM)
+        .environmentObject(appState)
 }

@@ -14,4 +14,6 @@ class AppState: ObservableObject {
     @Published var appError: AppError = .noError
     @Published var selectedTab: Int = 0
     @Published var showOverlay: Bool = false
+    @Published var topBarSize: CGSize = .zero
+    let cityListMax: Int = 5
 }

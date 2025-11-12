@@ -13,7 +13,7 @@ enum WeatherCode: String, CaseIterable {
     case snow
     case thunderstorm
     case unknown
-
+    
     init(code: Int) {
         switch code {
         case 0, 1, 2, 3:
@@ -32,7 +32,7 @@ enum WeatherCode: String, CaseIterable {
             self = .unknown
         }
     }
-
+    
     var description: String {
         switch self {
         case .clear: return "Clear"
@@ -42,6 +42,18 @@ enum WeatherCode: String, CaseIterable {
         case .snow: return "Snowy"
         case .thunderstorm: return "Thunderstorm"
         case .unknown: return "Unknown"
+        }
+    }
+    
+    var symbol: String {
+        switch self {
+        case .clear: return "sun.max.fill"
+        case .fog: return "cloud.fog.fill"
+        case .drizzle: return "cloud.drizzle.fill"
+        case .rain: return "cloud.rain.fill"
+        case .snow: return "cloud.snow.fill"
+        case .thunderstorm: return "cloud.bolt.rain.fill"
+        case .unknown: return "sparkles.fill"
         }
     }
 }

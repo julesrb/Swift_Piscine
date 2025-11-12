@@ -41,7 +41,7 @@ class LocationVM: ObservableObject {
     }
 
     func fetchCityList(city: String) async throws -> [City]{
-        let url = URL(string: "https://geocoding-api.open-meteo.com/v1/search?name=\(city)&count=10&language=en&format=json")!
+        let url = URL(string: "https://geocoding-api.open-meteo.com/v1/search?name=\(city)&count=\(appState.cityListMax)&language=en&format=json")!
         let (data, _) = try await URLSession.shared.data(from: url)
         let decode = try JSONDecoder().decode(Cities.self, from: data)
         return decode.results ?? []
