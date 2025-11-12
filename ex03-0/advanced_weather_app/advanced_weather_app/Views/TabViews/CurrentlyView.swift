@@ -15,25 +15,35 @@ struct CurrentlyView: View {
     var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading) {
-                VStack(alignment: .leading) {
-                    Text(weatherCoordinatorVM.locationVM.name)
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                    Text("\(weatherCoordinatorVM.locationVM.admin1), \(weatherCoordinatorVM.locationVM.country)")
-                        .font(.title)
+                if (weatherCoordinatorVM.locationVM.name != "") {
+                    VStack(alignment: .leading) {
+                        Text(weatherCoordinatorVM.locationVM.name)
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                        Text("\(weatherCoordinatorVM.locationVM.admin1),  \(weatherCoordinatorVM.locationVM.country)")
+                            .font(.title)
+                    }
+                    .padding(.bottom, 16)
                 }
-                .padding(.bottom, 10)
                 HStack {
                     if let weather = weatherCoordinatorVM.weather {
                         let weatherCode = WeatherCode(code: Int(weather.data.current.weatherCode))
-                        VStack(alignment: .leading) {
-                            Text("\(weatherCode.description)\t\t\(weather.data.current.temperature2m, specifier: "%.1f")°C")
-                            
-                            Text("Wind\t\t\(weather.data.current.windSpeed10m, specifier: "%.1f") Km/h")
+                        HStack {
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text("\(weatherCode.description)\t\t\(weather.data.current.temperature2m, specifier: "%.1f")°C")
+                                    
+                                    Text("Wind\t\t\(weather.data.current.windSpeed10m, specifier: "%.1f") Km/h")
+                                }
+                                Spacer()
+                                Image(systemName: weatherCode.symbol)
+                                    .font(.system(size: 50))
+                                
+                            }
+                            .padding()
                         }
-                        Spacer()
-                        Image(systemName: weatherCode.symbol)
-                            .font(.system(size: 50))
+                        .background(Color.black.opacity(0.4))
+                        .cornerRadius(20)
                         
                     } else {
                         ProgressView("Please provide an existing city or location...")
@@ -45,7 +55,7 @@ struct CurrentlyView: View {
             .padding()
             .padding()
         }
-        .padding(.top, appState.topBarSize.height)
+        .padding(.top, appState.topBarSize.height - 5)
         .foregroundColor(.white)
         .frame(minWidth: 0, maxWidth: .infinity)
         .ignoresSafeArea(.keyboard, edges: .all)

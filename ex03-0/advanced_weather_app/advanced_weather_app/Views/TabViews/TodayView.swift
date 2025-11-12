@@ -7,40 +7,125 @@
 
 
 import SwiftUI
+import Charts
 
 struct TodayView: View {
     @EnvironmentObject var appState: AppState
     @ObservedObject var weatherCoordinatorVM: WeatherCoordinatorVM
     
     var body: some View {
+        let formatter: DateFormatter = {
+            let f = DateFormatter()
+            f.dateFormat = "HH:mm"
+            return f
+        }()
+        let formatterHH: DateFormatter = {
+            let f = DateFormatter()
+            f.dateFormat = "HH"
+            return f
+        }()
         VStack {
-            Spacer()
             ScrollView {
-                Text(weatherCoordinatorVM.locationVM.name)
-                Text(weatherCoordinatorVM.locationVM.admin1)
-                Text(weatherCoordinatorVM.locationVM.country)
-                if let weather = weatherCoordinatorVM.weather {
-                    ForEach(0..<24, id: \.self) { i in
-                        HStack {
-                            let formatter: DateFormatter = {
-                                let f = DateFormatter()
-                                f.dateFormat = "HH:mm"
-                                return f
-                            }()
-                            Text(formatter.string(from: weather.data.hourly.time[i]))
-                            Text("\(weather.data.hourly.temperature2m[i], specifier: "%.1f")°C")
-                            Text("\(weather.data.hourly.weatherCode[i], specifier: "%.1f")")
-                            Text("\(weather.data.hourly.windSpeed10m[i], specifier: "%.1f") Km/h")
+                VStack(alignment: .leading) {
+                    if (weatherCoordinatorVM.locationVM.name != "") {
+                        VStack(alignment: .leading) {
+                            Text(weatherCoordinatorVM.locationVM.name)
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                            Text("\(weatherCoordinatorVM.locationVM.admin1),  \(weatherCoordinatorVM.locationVM.country)")
+                                .font(.title)
+                        }
+                        .padding(.bottom, 16)
+                    }
+                    VStack {
+                        if let weather = weatherCoordinatorVM.weather {
+                            Chart {
+                                ForEach(0..<24, id: \.self) { i in
+                                    LineMark(
+                                        x: .value("Hours",  weather.data.hourly.time[i]),
+                                        y: .value("Temperature", weather.data.hourly.temperature2m[i])
+                                    )
+                                    
+                                }
+                            }
+                            .chartYAxis {
+                                AxisMarks(values: .automatic(desiredCount: 4)) { value in
+                                    AxisValueLabel{
+                                        if let temp = value.as(Int.self) {
+                                            Text("\(temp) °C")
+                                                .font(.caption2)
+                                                .foregroundColor(.white)
+                                        }
+                                    }
+                                    AxisGridLine()
+                                        .foregroundStyle(Color.white.opacity(0.6))
+                                }
+                            }
+                            .chartXAxis {
+                                AxisMarks(values: .stride(by: .hour, count: 4)) { value in
+                                    AxisValueLabel{
+                                        if let date = value.as(Date.self) {
+                                            Text(formatterHH.string(from: date))
+                                                .font(.caption2)
+                                                .foregroundColor(.white)
+                                        }
+                                    }
+                                    AxisGridLine()
+                                        .foregroundStyle(Color.white.opacity(0.6))
+                                }
+                            }
+                            .padding()
+                            .padding(.top, 16)
                         }
                     }
-                } else {
-                    ProgressView("Loading weather...")
-                        .foregroundColor(.white)
+                    .background(Color.black.opacity(0.4))
+                    .cornerRadius(20)
+                    .frame(height: 250)
+                    .padding(.bottom, 10)
+                    VStack {
+                        if let weather = weatherCoordinatorVM.weather {
+                            VStack {
+                                ForEach(0..<24, id: \.self) { i in
+                                    HStack {
+                                        HStack {
+                                            let weatherCode = WeatherCode(code: Int(weather.data.hourly.weatherCode[i]))
+                                            VStack {
+                                                Text("\(formatter.string(from: weather.data.hourly.time[i]))\t\t")
+                                                    .fontWeight(.bold)
+                                                Spacer()
+                                            }
+                                            
+                                            VStack(alignment: .leading) {
+                                                Text("\(weatherCode.description)\t \(weather.data.hourly.temperature2m[i], specifier: "%.1f")°C")
+                                                
+                                                Text("Wind\t \(weather.data.hourly.windSpeed10m[i], specifier: "%.1f") Km/h")
+                                            }
+                                            Spacer()
+                                            VStack {
+                                                Image(systemName: weatherCode.symbol)
+                                                    .font(.system(size: 30))
+                                                Spacer()
+                                            }
+                                        }
+                                        
+                                    }
+                                }
+                                .padding()
+                                .background(Color.black.opacity(0.4))
+                                .cornerRadius(20)
+                            }
+                        } else {
+                            ProgressView("Loading weather...")
+                                .foregroundColor(.white)
+                        }
+                    }
                 }
+                .padding()
+                .padding()
             }
             Spacer()
         }
-        .padding(.top, appState.topBarSize.height)
+        .padding(.top, appState.topBarSize.height - 5)
         .foregroundColor(.white)
         .frame(minWidth: 0, maxWidth: .infinity)
         .ignoresSafeArea(.keyboard, edges: .all)
@@ -50,6 +135,7 @@ struct TodayView: View {
 #Preview {
     do {
         let appState = AppState()
+        appState.selectedTab = 1
         let locationVM = LocationVM(appState: appState)
         let weatherCoordinatorVM = WeatherCoordinatorVM(locationVM: locationVM, appState: appState)
         locationVM.name = "Brooklyn"

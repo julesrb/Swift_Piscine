@@ -10,7 +10,7 @@ import SwiftUI
 
 struct BackgroundView: View {
     var body: some View {
-        Image("orange")
+        Image("blue")
             .resizable()
             .scaledToFill()
             .scaleEffect(1.1)
