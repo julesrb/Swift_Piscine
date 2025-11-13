@@ -73,3 +73,8 @@ struct MainView: View {
     MainView(coordinatorVM: weatherCoordinatorVM, locationVM: locationVM)
         .environmentObject(appState)
 }
+
+//TODO GPS buton add hook to disable overlay
+//TODO load weather at startup
+//TODO request auth at startup
+//TODO fix city name loading 
