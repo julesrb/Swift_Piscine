@@ -5,20 +5,18 @@
 //  Created by jules bernard on 31.10.25.
 //
 
-
 import CoreLocation
 import Combine
+import SwiftUI
+
 
 class LocationService: NSObject,ObservableObject, CLLocationManagerDelegate {
     let manager = CLLocationManager()
     @Published var location: CLLocation?
-    var locationViewModel: LocationViewModel
+    var locationVM: LocationVM
     
-//    @Published var authStatus: CLAuthorizationStatus?
-//    @Published var location: CLLocation?
-    
-    init(locationViewModel: LocationViewModel){
-        self.locationViewModel = locationViewModel
+    init(locationVM: LocationVM){
+        self.locationVM = locationVM
         super.init()
         manager.delegate = self
     }
@@ -47,8 +45,12 @@ class LocationService: NSObject,ObservableObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let loc = locations.last else {return}
         let coord = "\(loc.coordinate.latitude) \(loc.coordinate.longitude)"
-        locationViewModel.midText = coord
-        }
+//        locationVM.latiLongi = [loc.coordinate.latitude, loc.coordinate.longitude]
+//        locationVM.latiLongi = [52.52, 13.419]
+        locationVM.latiLongi = [0, 0]
+        locationVM.midText = coord
+        locationVM.reverseGeocode()
+    }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
             print("Location error:", error.localizedDescription)

@@ -9,7 +9,15 @@ import SwiftUI
 
 struct MainView: View {
     @State private var selectedTab: Int = 0
-    @StateObject private var cityBarViewModel = LocationViewModel()
+    @StateObject private var weatherVM: WeatherVM
+    @StateObject private var locationVM: LocationVM
+    @State var showOverlay: Bool = false
+    @EnvironmentObject var appState: AppState
+    init() {
+        let weatherVM = WeatherVM()
+        _weatherVM = StateObject(wrappedValue: weatherVM)
+        _locationVM = StateObject(wrappedValue: LocationVM(weatherVM: weatherVM))
+    }
     
     var drag: some Gesture {
         DragGesture(minimumDistance: 0, coordinateSpace: .local)
@@ -26,27 +34,41 @@ struct MainView: View {
     var body: some View {
         ZStack(alignment: .top) {
             TabView(selection: $selectedTab) {
-                CurrentlyView(cityBarViewModel: cityBarViewModel)
+                CurrentlyView(locationVM: locationVM, weatherVM: weatherVM)
                     .tabItem { Label("Currently", systemImage: "clock.arrow.trianglehead.2.counterclockwise.rotate.90") }
                     .tag(0)
                     .background(BackgroundView())
                     .ignoresSafeArea(.keyboard, edges: .bottom)
-                TodayView(cityBarViewModel: cityBarViewModel)
+                TodayView(locationVM: locationVM, weatherVM: weatherVM)
                     .tabItem { Label("Today", systemImage: "1.calendar") }
                     .tag(1)
                     .background(BackgroundView())
                     .ignoresSafeArea(.keyboard, edges: .bottom)
-                WeeklyView(cityBarViewModel: cityBarViewModel)
+                WeeklyView(locationVM: locationVM, weatherVM: weatherVM)
                     .tabItem { Label("Weekly", systemImage: "calendar") }
                     .tag(2)
                     .background(BackgroundView())
                     .ignoresSafeArea(.keyboard, edges: .bottom)
             }
+            // TODO what if the city is not selected ?
             .tint(.white)
             .gesture(drag)
-            TopBarView(cityBarViewModel: cityBarViewModel)
+            .alert(
+                "App error",
+                isPresented: $appState.error
+            ) {} message: {
+                Text(appState.appError.descritpion)
+            }
+            SearchOverlay(showOverlay: $showOverlay)
+                .onTapGesture {
+                    showOverlay.toggle()
+                }
+            TopBarView(locationVM: locationVM, showOverlay: $showOverlay)
                 .padding(.top, 0)
                 .padding(.horizontal)
+                .environmentObject(appState)
+                .onAppear { weatherVM.appState = appState }
+                .onAppear { locationVM.appState = appState }
         }
     }
 }

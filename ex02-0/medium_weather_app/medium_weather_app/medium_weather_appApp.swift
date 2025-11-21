@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct medium_weather_appApp: App {
+    @StateObject private var appState = AppState()
     var body: some Scene {
         WindowGroup {
             MainView()
+                .environmentObject(appState)
         }
     }
 }
