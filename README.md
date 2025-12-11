@@ -1,78 +1,55 @@
-# Swift Piscine: The Trinity of Mobile Fundamentals
+# Swift Piscine Projects
 
-> *"What is a coding portfolio without a Calculator, a Note app, and a Weather app?"*
-
-At first glance, these projects might seem like the standard "Hello World" of mobile development—banal, even clichéd. But look closer. These aren't just apps; they are the **three pillars** upon which every robust mobile skillset is built. They represent the journey from internal logic, to external communication, to user identity.
-
-This repository is a collection of 42 School "Piscine" subjects, solved with a focus on modern **SwiftUI**, **Clean Architecture**, and **Scalability**.
+This repository showcases a collection of iOS applications built with **SwiftUI**, demonstrating a progression from basic UI layout to complex networking and authentication. The focus is on clean architecture, modern concurrency patterns, and third-party integrations.
 
 ---
 
-## 🧠 The Calculator: Logic & Layout
-**Project**: `calculator_app` (Day 00)
+## 1. Calculator (Logic & MVVM)
+**Project**: `calculator_app`
 
 ![Calculator App](img/Calc.png)
 
-A calculator is deceptively simple. It forces you to confront the chaos of user state. It is the pure distillation of **Internal Logic**.
+A functional calculator app built to demonstrate strict separation of concerns.
 
-*   **The Challenge**: Managing complex state transitions (operands, operators, decimals) without creating a "Massive View Controller".
-*   **The Solution**:
-    *   **MVVM Architecture**: Strict separation of the calculation engine (Model) from the View, mediated by a ViewModel to sanitise inputs.
-    *   **SwiftUI Layouts**: deeply nested `VStack` and `HStack` grids that adapt responsibly.
-    *   **State Management**: Using `@Published` properties to drive UI updates reactively, ensuring the display is always in sync with the data.
-
-**Key Tech**: `SwiftUI`, `MVVM`, `Grid/Stacks`, `Error Handling`.
+*   **Architecture**: Uses **MVVM** (Model-View-ViewModel) to decouple the calculation logic from the view layer.
+*   **UI Construction**: Layout built with nested `HStack` and `VStack` components.
+*   **State Management**: Utilizes `@Published` properties for reactive UI updates.
 
 ---
 
-## 🌍 The Weather App: Senses & Networking
-**Project**: `medium_weather_app` / `advanced_weather_app` (Day 01-03)
+## 2. Weather App (Networking & Concurrency)
+**Project**: `medium_weather_app` / `advanced_weather_app`
 
 ![Weather App](img/Weather.png)
 
-If the Calculator is the brain, the Weather App is the **Senses**. It breaks the isolation of the device, teaching it to speak to the outside world.
+A location-based weather application that fetches real-time data.
 
-*   **The Challenge**: The real world is messy. APIs fail, networks lag, and locations change. The app must process asynchronous data streams gracefully.
-*   **The Solution**:
-    *   **Async/Await**: Modern concurrency to handle network requests without "callback hell".
-    *   **OpenMeteo API**: Interfacing with a RESTful service, parsing raw JSON into type-safe Swift structs using `Codable`.
-    *   **CoreLocation**: Handling dangerous permissions and accessing the device's GPS hardware.
-    *   **State Orchestration**: Handling `Loading`, `Success`, and `Error` states to keep the user informed during network latency.
-
-**Key Tech**: `URLSession`, `Async/Await`, `Codable`, `CoreLocation`, `Dependancy Injection`.
+*   **Networking**: Implements **Async/Await** for non-blocking API requests to OpenMeteo.
+*   **Data Parsing**: Uses `Codable` structs to safely parse JSON responses.
+*   **Location Services**: Integrates `CoreLocation` to access device GPS coordinates and handle permission flows.
 
 ---
 
-## 🔐 The Diary App: Identity & Persistence
-**Project**: `diary_app` (Day 04-05)
+## 3. Diary App (Auth & Persistence)
+**Project**: `diary_app`
 
 ![Diary App](img/notes.png)
 
-The final pillar is **Memory**. A Notes app transforms a temporary experience into a permanent one. It introduces the user as a distinct entity.
+A secure notes application featuring user accounts and cloud integration.
 
-*   **The Challenge**: Data needs to survive the app closing. More importantly, it needs to be secure and tied to a specific individual.
-*   **The Solution**:
-    *   **Firebase Authentication**: Implementing full OAuth 2.0 flows (Google & GitHub Sign-In) to manage secure user sessions.
-    *   **Reactive Flow**: Using `Combine` authentication listeners to automatically route the user between Login and Home screens based on session state.
-    *   **Complex UI**: Custom modal presentations (`FormPopup`) and deep navigation stacks.
-    *   **Security**: Handling tokens and user credentials safely.
-
-**Key Tech**: `Firebase Auth` (OAuth), `GoogleSignIn`, `Combine`, `Secure Storage`, `Custom Modals`.
+*   **Authentication**: Implements **Firebase Auth** with OAuth providers (Google & GitHub).
+*   **Reactive Flow**: Uses `Combine` listeners to manage authentication state and route users.
+*   **Storage**: Securely manages user sessions and data persistence.
 
 ---
 
-## 🛠 Tech Stack Overview
+## Tech Stack Overview
 
-| Category | Technologies Used |
+| Category | Technologies |
 | :--- | :--- |
-| **UI Framework** | SwiftUI, UIKit Integration |
-| **Architecture** | MVVM (Model-View-ViewModel) |
+| **UI** | SwiftUI, UIKit Integration |
+| **Architecture** | MVVM |
 | **Concurrency** | Async/Await, Combine |
-| **Networking** | URLSession, REST APIs, JSON Parsing |
-| **Backend/Auth** | Firebase Auth, OAuth (Google/GitHub) |
-| **Hardware** | CoreLocation (GPS) |
-
----
-
-### Conclusion
-This repository isn't just a list of exercises. It is a progression from **controlling the screen** (Calculator), to **connecting to the world** (Weather), to **recognizing the user** (Diary). These are the fundamental atoms of every major app you use today.
+| **Networking** | URLSession, REST APIs |
+| **Backend** | Firebase Auth, OAuth |
+| **Core** | CoreLocation |
