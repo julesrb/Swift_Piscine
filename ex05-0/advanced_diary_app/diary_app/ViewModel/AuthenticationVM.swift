@@ -46,6 +46,7 @@ class AuthenticationVM: NSObject, ObservableObject {
     }
     
     func googleOauth() async throws {
+        self.logout()
         // google sign in
         guard let clientID = FirebaseApp.app()?.options.clientID else {
             throw AuthenticationError.runtimeError("no firbase clientID found")
@@ -100,8 +101,9 @@ class AuthenticationVM: NSObject, ObservableObject {
     }
 
     func githubOauth() async throws {
+        self.logout()
         let provider = OAuthProvider(providerID: "github.com")
-        provider.customParameters = ["allow_signup": "false"]
+        provider.customParameters = ["allow_signup": "false", "login": "" ]
         provider.scopes = ["read:user", "user:email"]
         self.oauthProvider = provider
         
@@ -155,8 +157,12 @@ class AuthenticationVM: NSObject, ObservableObject {
     }
  
     
-    func logout() async throws {
-        GIDSignIn.sharedInstance.signOut()
-        try Auth.auth().signOut()
+    func logout() {
+        let firebaseAuth = Auth.auth()
+        do {
+          try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+          print("Error signing out: %@", signOutError)
+        }
     }
 }

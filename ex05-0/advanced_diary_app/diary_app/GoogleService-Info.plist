@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>396658751430-7kj55okp71jejf69m9adgnsapq3ovlof.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.396658751430-7kj55okp71jejf69m9adgnsapq3ovlof</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCfDNenCRsxo7-GD4cePTgkzTOm84fVZB4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>396658751430</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>julesrb.diary-app</string>
+	<key>PROJECT_ID</key>
+	<string>noteapp-f284b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>noteapp-f284b.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:396658751430:ios:6b8be1492e15b197af64c7</string>
+</dict>
+</plist>
